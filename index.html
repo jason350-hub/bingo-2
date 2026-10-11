@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>臺灣人權 BINGO 大挑戰 - 228・日治人權・轉型正義・不義遺址投屏互動系統</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.9); }
+        }
+        .animate-gold-glow {
+            animation: pulse-gold 2s infinite;
+        }
+        .card-flip {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        /* 列印模式專用樣式 */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-worksheet, #printable-worksheet * {
+                visibility: visible;
+            }
+            #printable-worksheet {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                display: block !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col select-none overflow-x-hidden">
+    <!-- 頂部資訊與控制欄 -->
+    <header class="bg-slate-800/90 border-b border-slate-700/80 px-4 py-2.5 backdrop-blur-md sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-xl shadow-md text-white">
+                權
+            </div>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black tracking-wide text-white flex items-center gap-2">
+                    臺灣人權 BINGO 大挑戰
+                    <span class="text-xs bg-indigo-500/30 text-indigo-300 border border-indigo-400/40 px-2 py-0.5 rounded-full font-medium">歷史與轉型正義版</span>
+                </h1>
+                <p class="text-xs text-slate-400 hidden sm:block">6×6 歷史人權知識搶答（228事件・日治人權・轉型正義・不義遺址）</p>
+            </div>
+        </div>
+
+        <!-- 頂部快捷操作按鈕組 -->
+        <div class="flex items-center gap-2">
+            <!-- 一鍵下載離線檔案按鈕 -->
+            <button onclick="downloadCurrentHtmlFile()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm shadow-md transition transform active:scale-95" title="下載單一 index.html 檔案，方便上傳 EZPAGE 或離線備用">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>下載 index.html</span>
+            </button>
+
+            <!-- 30秒記憶預覽按鈕 -->
+            <button onclick="startPreviewMode()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs md:text-sm shadow-md transition transform active:scale-95" title="展示所有宮格內容與金額 30 秒供各組記憶">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>30秒預覽記憶</span>
+            </button>
+
+            <!-- 隨機抽籤輪盤按鈕 -->
+            <button onclick="pickRandomUnopenedTile()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs md:text-sm shadow transition transform active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                <span>抽籤叫號</span>
+            </button>
+
+            <!-- 列印空白學習單按鈕 -->
+            <button onclick="openPrintModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs md:text-sm font-medium transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                <span class="hidden md:inline">列印學習單</span>
+            </button>
+
+            <!-- 規則說明按鈕 -->
+            <button onclick="toggleModal('rules-modal', true)" class="p-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm transition" title="遊戲規則">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </button>
+
+            <!-- 音效開關 -->
+            <button id="sound-btn" onclick="toggleSound()" class="p-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-amber-400 text-sm transition" title="開關音效">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+
+            <!-- 全螢幕切換 -->
+            <button onclick="toggleFullscreen()" class="p-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm transition" title="全螢幕模式">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主畫面核心區塊：左側 6x6 賓果主宮格，右側 分組榜與14條線登記表 -->
+    <main class="flex-1 p-3 md:p-5 max-w-[1920px] w-full mx-auto grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+        
+        <!-- 左側主體：6x6 宮格投影區 (佔 8 ~ 9 欄) -->
+        <section class="xl:col-span-8 2xl:col-span-9 bg-slate-800/60 rounded-2xl p-3 md:p-5 border border-slate-700 shadow-2xl flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-200">36 宮格臺灣人權題庫面板</h2>
+                    <span id="unopened-counter" class="text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">剩餘 36 格</span>
+                </div>
+                <div class="text-xs md:text-sm text-slate-400 flex items-center gap-4">
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-slate-700 border border-slate-600 inline-block"></span> 未開啟</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-emerald-600 inline-block"></span> 答對得分</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rose-900/60 border border-rose-500/50 inline-block"></span> 未得分/已開</span>
+                </div>
+            </div>
+
+            <!-- 6x6 網格主體 -->
+            <div id="bingo-grid" class="grid grid-cols-6 gap-2 md:gap-3 aspect-square max-h-[75vh] w-full mx-auto">
+                <!-- 由 JavaScript 自動動態渲染 36 個宮格 -->
+            </div>
+
+            <!-- 底部操作提示 -->
+            <div class="mt-4 pt-3 border-t border-slate-700/60 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+                <div>💡 提示：點擊任意宮格開啟題目；按鍵盤 <kbd class="px-1.5 py-0.5 bg-slate-700 text-slate-200 rounded border border-slate-600">Space</kbd> 可啟動/暫停10秒計時器。</div>
+                <button onclick="promptResetGame()" class="text-rose-400 hover:text-rose-300 hover:underline">重設整場遊戲</button>
+            </div>
+        </section>
+
+        <!-- 右側側邊欄：分組計分板 + 14 條線 BINGO 搶先登記 (佔 3 ~ 4 欄) -->
+        <aside class="xl:col-span-4 2xl:col-span-3 space-y-4">
+
+            <!-- 1. 當前輪到組別與分組排行榜 -->
+            <div class="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 shadow-xl">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-base md:text-lg text-white flex items-center gap-2">
+                        <span>🏆</span> 各組收支累計表
+                    </h3>
+                    <div class="flex items-center gap-1">
+                        <button onclick="changeCurrentTurn()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-2 py-1 rounded transition">
+                            換下一組 ➔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 當前行動組提示 -->
+                <div id="current-turn-banner" class="mb-3 p-2.5 rounded-xl bg-gradient-to-r from-indigo-900/80 to-purple-900/80 border border-indigo-500/40 flex items-center justify-between">
+                    <div class="text-xs text-indigo-200">當前回合選擇權：</div>
+                    <div id="current-turn-name" class="font-black text-amber-300 text-base md:text-lg">第 1 組</div>
+                </div>
+
+                <!-- 分組清單 -->
+                <div id="teams-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                    <!-- JS 動態生成組別與金額卡片 -->
+                </div>
+            </div>
+
+            <!-- 2. 14條線 BINGO 搶先登記器 ($5,000元線路獎金) -->
+            <div class="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 shadow-xl">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h3 class="font-bold text-base md:text-lg text-amber-300 flex items-center gap-1.5">
+                            <span>⚡</span> 連線搶先記錄表
+                        </h3>
+                        <p class="text-xs text-slate-400">每條線限首個喊出「BINGO」的組別獨得 $5,000 元</p>
+                    </div>
+                    <span id="claimed-lines-count" class="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                        0 / 14 條
+                    </span>
+                </div>
+
+                <!-- 連線標籤頁切換 -->
+                <div class="flex border-b border-slate-700 text-xs font-semibold mb-2.5">
+                    <button id="tab-horizontal" onclick="switchLineTab('h')" class="flex-1 py-1.5 text-center text-amber-400 border-b-2 border-amber-400 font-bold">橫向 (6)</button>
+                    <button id="tab-vertical" onclick="switchLineTab('v')" class="flex-1 py-1.5 text-center text-slate-400 hover:text-slate-200">縱向 (6)</button>
+                    <button id="tab-diagonal" onclick="switchLineTab('d')" class="flex-1 py-1.5 text-center text-slate-400 hover:text-slate-200">斜線 (2)</button>
+                </div>
+
+                <!-- 連線項目列表容器 -->
+                <div id="lines-container" class="space-y-1.5 max-h-[280px] overflow-y-auto pr-1">
+                    <!-- JS 生成具體連線登記按鈕 -->
+                </div>
+            </div>
+
+            <!-- 3. 教學統計與快速備忘 -->
+            <div class="p-3 bg-slate-800/40 rounded-xl border border-slate-700/50 text-xs text-slate-400 flex items-center justify-between">
+                <span>累計發出總獎金：<strong id="total-money-issued" class="text-emerald-400 text-sm">$0</strong></span>
+                <span>已完成題數：<strong id="completed-questions-count" class="text-indigo-400 text-sm">0/36</strong></span>
+            </div>
+        </aside>
+    </main>
+
+    <!-- 題目彈窗互動 Modal (投屏主焦點) -->
+    <div id="question-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-indigo-500/70 rounded-3xl max-w-4xl w-full p-6 md:p-8 shadow-2xl flex flex-col relative transform transition-all scale-100 animate-in fade-in zoom-in-95 duration-200">
+            
+            <!-- 彈窗頂部：題號與金額標籤 -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <span id="modal-q-number" class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        1
+                    </span>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-indigo-400 font-bold">臺灣人權知識挑戰題</div>
+                        <h4 id="modal-q-category" class="text-sm text-slate-300 font-medium">題目序號 #1</h4>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 block">本題獎勵金額</span>
+                        <span id="modal-q-reward" class="text-2xl md:text-3xl font-black text-amber-400 tracking-tight">$3,000 元</span>
+                    </div>
+                    <button onclick="closeQuestionModal()" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- 題目主文字展示區 (超大清晰字體，利於投屏觀看) -->
+            <div class="my-3 py-6 px-5 rounded-2xl bg-slate-800/70 border border-slate-700 text-center flex flex-col items-center justify-center min-h-[160px]">
+                <div id="modal-q-text" class="text-2xl md:text-4xl font-black text-white leading-relaxed tracking-wide">
+                    題目載入中...
+                </div>
+            </div>
+
+            <!-- 10秒答題倒數計時器 -->
+            <div class="my-3 p-4 rounded-2xl bg-slate-800/50 border border-slate-700/80 flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-slate-300">⏱️ 回答限時（10秒）</span>
+                        <span id="timer-badge" class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">未啟動</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="timer-toggle-btn" onclick="toggleTimer()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition">
+                            開始倒數
+                        </button>
+                        <button onclick="resetTimer()" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs rounded-lg transition">
+                            重置
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 進度條 -->
+                <div class="w-full bg-slate-700 h-3.5 rounded-full overflow-hidden relative">
+                    <div id="timer-bar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500 transition-all duration-100 ease-linear" style="width: 100%;"></div>
+                </div>
+                <div class="text-right text-xs font-mono font-bold text-slate-400" id="timer-text">剩餘：10.0 秒</div>
+            </div>
+
+            <!-- 參考解答折疊區塊 (供教師查閱解說) -->
+            <div class="mt-2 mb-4">
+                <button onclick="toggleAnswerReveal()" id="answer-reveal-btn" class="w-full py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700/80 text-indigo-300 text-sm font-semibold flex items-center justify-between transition border border-indigo-500/20">
+                    <span>💡 點擊展開「課堂參考解答與歷史解說」</span>
+                    <span id="answer-reveal-icon">▼</span>
+                </button>
+                <div id="answer-content-box" class="hidden mt-2 p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-indigo-100 text-base leading-relaxed">
+                    <strong class="text-amber-300 block mb-1">【標準參考答案】：</strong>
+                    <p id="modal-q-answer" class="font-bold text-lg text-emerald-300"></p>
+                    <p id="modal-q-detail" class="mt-2 text-xs md:text-sm text-slate-300 leading-normal"></p>
+                </div>
+            </div>
+
+            <!-- 評分結算按鈕組 -->
+            <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">得分組別：</span>
+                    <select id="modal-awarding-team" class="bg-slate-800 border border-slate-700 text-amber-300 font-bold text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500">
+                        <!-- JS 動態填充分組選項 -->
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="markQuestionResult(false)" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-rose-300 border border-rose-500/30 text-sm font-bold transition">
+                        ❌ 答錯 / 棄權 (不加分)
+                    </button>
+                    <button onclick="markQuestionResult(true)" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-sm font-black shadow-lg shadow-emerald-900/40 transition transform active:scale-95 flex items-center gap-2">
+                        <span>✅ 答對！頒發獎勵</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 30 秒記憶大考驗模式全螢幕 Overlay -->
+    <div id="preview-modal" class="fixed inset-0 bg-slate-950/95 z-50 hidden flex flex-col p-4 md:p-6 backdrop-blur-lg">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🧠</span>
+                <div>
+                    <h3 class="text-2xl font-black text-amber-400 tracking-wide">30 秒速記大考驗！</h3>
+                    <p class="text-sm text-slate-300">請各組迅速記下 36 宮格內的高金額項目與分佈位置！</p>
+                </div>
+            </div>
+
+            <!-- 倒數大數字 -->
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-900 border-2 border-amber-500 px-5 py-1.5 rounded-2xl flex items-center gap-2 shadow-lg">
+                    <span class="text-xs text-amber-300 uppercase font-bold">倒數</span>
+                    <span id="preview-timer-num" class="text-4xl font-mono font-black text-amber-400">30</span>
+                    <span class="text-xs text-amber-300">秒</span>
+                </div>
+                <button onclick="stopPreviewMode()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-sm font-bold transition">
+                    提早結束
+                </button>
+            </div>
+        </div>
+
+        <!-- 36 格卡片縮略一覽 (全展開) -->
+        <div id="preview-grid" class="flex-1 grid grid-cols-6 gap-2 overflow-y-auto p-1">
+            <!-- JS 動態生成 36 格正面卡片 -->
+        </div>
+    </div>
+
+    <!-- 連線確認登記 Modal -->
+    <div id="line-claim-modal" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-500/60 rounded-3xl max-w-md w-full p-6 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500 mx-auto flex items-center justify-center text-3xl font-black mb-3">
+                🎉
+            </div>
+            <h3 class="text-2xl font-black text-white mb-1">恭喜喊出 BINGO 連線！</h3>
+            <p id="line-claim-target-text" class="text-sm text-amber-300 font-bold mb-4">登記連線：橫一 (獎金 $5,000)</p>
+
+            <div class="text-left bg-slate-800/80 p-4 rounded-xl border border-slate-700 mb-5">
+                <label class="block text-xs text-slate-400 mb-1.5 font-medium">請選擇第一位喊出 BINGO 的搶先組別：</label>
+                <select id="line-claim-team-select" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-amber-400">
+                    <!-- JS 生成組別選項 -->
+                </select>
+            </div>
+
+            <div class="flex items-center gap-2 justify-end">
+                <button onclick="toggleModal('line-claim-modal', false)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium transition">
+                    取消
+                </button>
+                <button onclick="confirmClaimLine()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-sm font-black shadow-lg transition">
+                    確定登記並發放 $5,000 獎金
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 遊戲規則 Modal -->
+    <div id="rules-modal" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span>📖</span> 臺灣人權 BINGO 活動規則說明
+                </h3>
+                <button onclick="toggleModal('rules-modal', false)" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            
+            <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                <div class="bg-indigo-950/30 border border-indigo-500/30 p-3.5 rounded-xl">
+                    <h5 class="text-indigo-300 font-bold mb-1">【遊戲準備】</h5>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-300 text-xs md:text-sm">
+                        <li><strong>發放紙本：</strong>發下 6×6 空白宮格表與收支表給各小組。</li>
+                        <li><strong>填入數字：</strong>各組隨機將 <strong>1 ~ 36</strong> 不重複數字填入空白 36 宮格內。</li>
+                        <li><strong>決定順序：</strong>各組抽撲克牌或由電腦隨機決定答題發言順序。</li>
+                        <li><strong>30秒預覽：</strong>教師點擊「30秒預覽記憶」，投屏展示宮格內容與金額 30 秒，請各組記錄宮格內的重點項目與金額。</li>
+                    </ol>
+                </div>
+
+                <div class="bg-amber-950/30 border border-amber-500/30 p-3.5 rounded-xl">
+                    <h5 class="text-amber-300 font-bold mb-1">【進行步驟與評分規則】</h5>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-300 text-xs md:text-sm">
+                        <li><strong>輪流挑題：</strong>輪到該組時，從螢幕上挑選一個尚未開啟的宮格號碼。</li>
+                        <li><strong>限時作答：</strong>該組推派代表進行回答，限時 <strong>10 秒內</strong>完成作答。</li>
+                        <li><strong>答對獲得獎金：</strong>答對者獲得該格對應的獎金（$1,000 ~ $10,000 元），並記錄在收支表上。</li>
+                        <li><strong>連線 BINGO 大獎 ($5,000)：</strong>各組在自己紙本上圈選該號碼。當形成 6 格一直線（橫、直、斜共 14 條可能）時，全組必須齊聲大喊<strong>「BINGO」</strong>！</li>
+                        <li><strong>首位獨得原則：</strong>每條連線<strong>只有全班最先喊出並核對正確之組別可獲得 5,000 元加碼獎金</strong>，後續其他組別連成該線則不予計分。</li>
+                        <li><strong>勝負判定：</strong>36 格全數點選完畢後，統計各組「題目獎金 + 連線獎金」之總金額，金額最高組別獲勝！</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="mt-6 text-right">
+                <button onclick="toggleModal('rules-modal', false)" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition">
+                    我明白了，開始遊戲
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重設遊戲安全確認 Modal (完全取代原生 confirm，防止 iframe 阻擋) -->
+    <div id="reset-confirm-modal" class="fixed inset-0 bg-slate-950/85 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-rose-500/50 rounded-3xl max-w-md w-full p-6 shadow-2xl text-center">
+            <div class="w-14 h-14 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500 mx-auto flex items-center justify-center text-2xl font-black mb-3">
+                ⚠️
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">確定要重設整場遊戲嗎？</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+                重設後將歸零所有 36 題回答狀態、連線登記紀錄以及各組累積之所有獎金。此操作無法復原。
+            </p>
+            <div class="flex items-center justify-center gap-3">
+                <button onclick="toggleModal('reset-confirm-modal', false)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-semibold transition">
+                    取消保留
+                </button>
+                <button onclick="executeResetGame()" class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-bold shadow-lg transition">
+                    確定重設
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 列印學生空白 6x6 宮格與收支記錄單 (列印專用 Modal / DOM) -->
+    <div id="print-modal" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center">
+            <h3 class="text-xl font-bold text-white mb-2">準備列印學生分組學習單</h3>
+            <p class="text-sm text-slate-400 mb-6">點擊下方按鈕將開啟瀏覽器列印視窗，格式已排版為標準 A4 學生操作用紙（包含 36 空白宮格與連線紀錄表）。</p>
+            <div class="flex items-center justify-center gap-3">
+                <button onclick="toggleModal('print-modal', false)" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-sm font-semibold">取消</button>
+                <button onclick="window.print()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-black shadow-lg">🖨️ 確認列印學習單</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 實際被列印的 A4 樣板 (螢幕常態隱藏，列印時可見) -->
+    <div id="printable-worksheet" class="hidden text-black bg-white p-6 font-sans">
+        <div style="text-align: center; margin-bottom: 12px; border-bottom: 2px solid #000; padding-bottom: 8px;">
+            <h2 style="font-size: 22px; font-weight: bold; margin: 0;">臺灣人權 BINGO 學習單與收支記錄表</h2>
+            <div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 6px;">
+                <span>組別：第 _______ 組</span>
+                <span>組長/紀錄員：_____________</span>
+                <span>組員名單：___________________________</span>
+            </div>
+        </div>
+
+        <p style="font-size: 12px; margin-bottom: 8px;">★ <strong>主題範疇：</strong>二二八事件、日治時期人權、轉型正義、白色恐怖不義遺址。請隨機將 <strong>1 ~ 36</strong> 不重複數字填入下方 6×6 空白方格內。遊戲進行時圈選答出之號碼，最先連成 6 格直線齊喊「BINGO」之組別獨得 5,000 元！</p>
+
+        <!-- 6x6 空白表格 -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; text-align: center;">
+            <thead>
+                <tr style="background: #f1f5f9;">
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 12px; width: 14%;">斜\直</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 1</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 2</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 3</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 4</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 5</th>
+                    <th style="border: 1px solid #000; padding: 6px; font-size: 13px;">直 6</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫一</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫二</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫三</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫四</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫五</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #000; padding: 12px 4px; font-size: 12px; font-weight: bold;">橫六</td>
+                    <td style="border: 1px solid #000; height: 48px;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                    <td style="border: 1px solid #000;"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 小組連線紀錄表與收支結算 -->
+        <h4 style="font-size: 13px; font-weight: bold; margin: 4px 0;">小組 14 條連線記錄核對表（是否領先獲得 5,000 元）：</h4>
+        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 11px; margin-bottom: 12px;">
+            <tr style="background: #f8fafc;">
+                <td style="border: 1px solid #000; font-weight: bold; padding: 4px;">連線線條</td>
+                <td style="border: 1px solid #000;">直 1</td>
+                <td style="border: 1px solid #000;">直 2</td>
+                <td style="border: 1px solid #000;">直 3</td>
+                <td style="border: 1px solid #000;">直 4</td>
+                <td style="border: 1px solid #000;">直 5</td>
+                <td style="border: 1px solid #000;">直 6</td>
+                <td style="border: 1px solid #000;">左上至右下斜線</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; font-weight: bold; padding: 6px;">是否優先連線</td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+            </tr>
+            <tr style="background: #f8fafc;">
+                <td style="border: 1px solid #000; font-weight: bold; padding: 4px;">連線線條</td>
+                <td style="border: 1px solid #000;">橫一</td>
+                <td style="border: 1px solid #000;">橫二</td>
+                <td style="border: 1px solid #000;">橫三</td>
+                <td style="border: 1px solid #000;">橫四</td>
+                <td style="border: 1px solid #000;">橫五</td>
+                <td style="border: 1px solid #000;">橫六</td>
+                <td style="border: 1px solid #000;">右上至左下斜線</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; font-weight: bold; padding: 6px;">是否優先連線</td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+            </tr>
+        </table>
+
+        <div style="border: 1px dashed #000; padding: 8px; font-size: 12px; display: flex; justify-content: space-between;">
+            <span>題目答對累積獎金：$_________________ 元</span>
+            <span>連線獎金 (____條 × 5,000)：$_________________ 元</span>
+            <span><strong>最終總收益：$_________________ 元</strong></span>
+        </div>
+    </div>
+
+    <!-- 慶祝彩帶畫布 -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <script>
+        /* 
+           臺灣人權賓果 36 道題目、金額與標準解答資料庫
+           涵蓋四大核心範疇：
+           1. 二二八事件 (歷史真相、重要人物、抗爭導火線與和平紀念)
+           2. 日治時期人權與社會運動 (文協、民眾黨、議會請願、農民組合、工友總聯盟)
+           3. 轉型正義 (四大支柱、促轉會核心任務、政治檔案、平復司法不法、清除威權象徵)
+           4. 白色恐怖不義遺址 (馬場町、景美人權園區、綠島新生訓導處、安康接待室、六張犁)
+        */
+        const QUESTIONS_DATA = [
+            { 
+                id: 1, 
+                title: "天馬茶房與228導火線", 
+                reward: 3000, 
+                answer: "專賣局查緝員查緝私菸並暴力毆打菸販", 
+                detail: "1947年2月27日傍晚，專賣局查緝員在臺北市延平北路「天馬茶房」前查扣私菸並毆打女販林江邁，混亂中開槍誤擊市民陳文溪，點燃全島二二八事件抗爭怒火。" 
+            },
+            { 
+                id: 2, 
+                title: "臺灣文化協會創立宗旨", 
+                reward: 2000, 
+                answer: "啟蒙臺灣民眾思想、助長臺灣文化發達", 
+                detail: "1921年由蔣渭水、林獻堂等人在大稻埕創立，透過演講會、讀報社、文化劇等方式喚醒民族自尊與公民人權意識，為日治時期最重要的啟蒙組織。" 
+            },
+            { 
+                id: 3, 
+                title: "治警事件爭取的權益", 
+                reward: 5000, 
+                answer: "爭取結社自由與臺灣議會設置", 
+                detail: "1923年日本總督府以違反《治安警察法》為由搜捕蔣渭水、蔡培火等「臺灣議會期成同盟會」成員，審判過程反而大幅激發臺灣民眾對參政與人權的關注。" 
+            },
+            { 
+                id: 4, 
+                title: "兩大白色恐怖國家人權園區", 
+                reward: 8000, 
+                answer: "白色恐怖景美紀念園區、白色恐怖綠島紀念園區", 
+                detail: "隸屬於文化部國家人權博物館，分別為戒嚴時期軍法審判看守所（原景美看守所）與長期監禁感訓政治犯之牢獄（綠島新生訓導處及綠洲山莊）。" 
+            },
+            { 
+                id: 5, 
+                title: "轉型正義四大核心支柱", 
+                reward: 3000, 
+                answer: "真相、正義、賠償、保證不再發生 (Truth, Justice, Reparation, Guarantees of Non-recurrence)", 
+                detail: "依聯合國轉型正義指導原則，民主轉型國家面對威權統治人權侵害，必須透過調查歷史真相、究責、補償平復受害者，並推動制度革新確保悲劇永不重演。" 
+            },
+            { 
+                id: 6, 
+                title: "臺灣議會設置請願運動次數", 
+                reward: 2000, 
+                answer: "歷時 14 年、共進行 15 次請願", 
+                detail: "自1921年至1934年間，林獻堂等人領導臺灣知識分子向日本帝國議會持續遞交請願書，爭取由全島住民選出之民意立法機關，為臺灣民主憲政之濫觴。" 
+            },
+            { 
+                id: 7, 
+                title: "「不義遺址」的法定定義", 
+                reward: 3000, 
+                answer: "威權統治時期侵害人權之統治行為發生地或歷史現場", 
+                detail: "指在二二八事件與戒嚴體制白色恐怖時期，國家公權力大規模實施偵訊、刑求、審判、監禁、處決等侵害生命與自由人權之建築、場所與遺址。" 
+            },
+            { 
+                id: 8, 
+                title: "馬場町紀念公園歷史意義", 
+                reward: 2500, 
+                answer: "白色恐怖時期執行政治犯死刑槍決最多的刑場", 
+                detail: "位於臺北市萬華區新店溪畔，1950年代戒嚴初期為國防部保密局與憲兵隊槍決政治犯、共產黨嫌疑者與良心犯之主要行刑地，今設有土丘地標以示悼念。" 
+            },
+            { 
+                id: 9, 
+                title: "臺灣新文學之父與人道關懷", 
+                reward: 1500, 
+                answer: "賴和（字懶雲）", 
+                detail: "彰化仁醫賴和以白話文學深刻揭露日本警察殖民暴力與農民被剝削困境（如短篇小說《一桿「稱仔」》），始終站在弱勢者立場發聲，被尊稱為臺灣新文學之父。" 
+            },
+            { 
+                id: 10, 
+                title: "二二八事件爆發年份", 
+                reward: 2000, 
+                answer: "1947 年 (民國 36 年)", 
+                detail: "1947年2月27日私菸查緝引發衝突，2月28日長官公署衛兵開槍射殺陳情民眾，隨後抗爭蔓延全島，後遭國民政府調派軍隊鎮壓，造成難以抹滅的歷史傷痛。" 
+            },
+            { 
+                id: 11, 
+                title: "促轉會四大核心任務", 
+                reward: 10000, 
+                answer: "開放政治檔案、清除威權象徵、平復司法不法、還原歷史真相", 
+                detail: "依《促進轉型正義條例》第2條，促轉會受命推動：1.開放政治檔案；2.清除威權象徵、保存不義遺址；3.平復司法不法、還原歷史真相、促進社會和解；4.不當黨產之處理。" 
+            },
+            { 
+                id: 12, 
+                title: "二二八和平紀念日法定制訂", 
+                reward: 1000, 
+                answer: "每年 2 月 28 日，定為國定假日", 
+                detail: "1995年立法院制定《二二八事件處理及補償條例》，明訂2月28日為國定和平紀念日並放假，提醒全體國人記取歷史教訓、捍衛人權民主與促進族群共融。" 
+            },
+            { 
+                id: 13, 
+                title: "二林蔗農事件爭取的權益", 
+                reward: 5000, 
+                answer: "反對製糖株式會社剝削、爭取合理收購定價權", 
+                detail: "1925年彰化二林蔗農在李應章等人組織下成立農民組合，抵抗日本資本家林本源製糖會社對秤重、過磅與收購價之任意苛扣，為臺灣近代農民爭取勞動尊嚴之先驅。" 
+            },
+            { 
+                id: 14, 
+                title: "臺灣史上第一個合法政黨", 
+                reward: 1000, 
+                answer: "臺灣民眾黨 (1927年創立)", 
+                detail: "1927年蔣渭水等人成立臺灣史上首個合法的現代政治政黨，黨旗為仿青天白日之三星旗，以確立民主政制、建設合理的經濟組織、改廢不良制度為政綱。" 
+            },
+            { 
+                id: 15, 
+                title: "安康接待室的歷史定位", 
+                reward: 8000, 
+                answer: "調查局地下留置偵訊所（白色恐怖秘密偵訊刑求處）", 
+                detail: "位於新北市新店區荒僻山區，是戒嚴時期法務部調查局用以長期羈押、秘密疲勞審訊政治犯的不義遺址，許多受難者在此遭受酷刑逼供，現已被審定為不義遺址。" 
+            },
+            { 
+                id: 16, 
+                title: "六三法侵害人權的法理本質", 
+                reward: 10000, 
+                answer: "賦予總督兼具行政與立法權，違反權力分立與法治國原則", 
+                detail: "1896年日本帝國頒布第63號法律，授權臺灣總督得頒布具法律效力之「律令」，使總督集行政、立法、軍事三權於一身，形成專制特別統治，剝奪殖民地人民的基本權保障。" 
+            },
+            { 
+                id: 17, 
+                title: "湯德章律師與紀念節日", 
+                reward: 4000, 
+                answer: "臺南「正義與勇氣紀念日」（3月13日）", 
+                detail: "二二八事件爆發後，臺南律師湯德章擔任處委會治安組長維持秩序，遭軍隊逮捕後堅不供出參與者名冊，於民生綠園從容赴義，保護無數臺南學生青年。" 
+            },
+            { 
+                id: 18, 
+                title: "政治檔案條例的核心目標", 
+                reward: 3000, 
+                answer: "解密與開放威權時期檔案、還原歷史真相、保障人民知情權", 
+                detail: "2019年通過《政治檔案條例》，明令政府機關不得藉國家安全為由無限制封存戒嚴政治檔案，推動檔案清查、解密及開放研究，確立受害者知的權利。" 
+            },
+            { 
+                id: 19, 
+                title: "警備總部在戒嚴時期的權限", 
+                reward: 2000, 
+                answer: "思想查禁、電話監聽、入出境管制與軍法審判平民", 
+                detail: "「臺灣警備總司令部（警總）」在長達38年的戒嚴時期，專司情報治安、言論審查與抓捕異議人士，平民若涉犯叛亂罪皆由其軍法處審判，為白色恐怖權力象徵。" 
+            },
+            { 
+                id: 20, 
+                title: "六張犁公墓發現的歷史意義", 
+                reward: 4000, 
+                answer: "證實白色恐怖受難者遺體遭草率棄葬無人認領之歷史真相", 
+                detail: "1993年政治受難者曾梅蘭在臺北六張犁山區意外尋獲近兩百座戒嚴時期遭軍法槍決之政治犯荒塚，為國家機器草率掩埋受難者骨骸提供不可抹滅之實體鐵證。" 
+            },
+            { 
+                id: 21, 
+                title: "美麗島大審軍法審判地點", 
+                reward: 6000, 
+                answer: "警備總部軍法處看守所第一法庭（今景美人權紀念園區）", 
+                detail: "1980年警總在此公開審判黃信介、施明德、呂秀蓮、林義雄等美麗島事件核心領導者，辯護律師團的憲政人權辯護引起國際矚目，成為敲響戒嚴體制的關鍵轉捩點。" 
+            },
+            { 
+                id: 22, 
+                title: "霧社事件省思的原民權利", 
+                reward: 2000, 
+                answer: "反思原住民族文化尊嚴、土地資源遭侵奪與民族自決權", 
+                detail: "1930年賽德克族馬赫坡社頭目莫那·魯道因不滿日本理蕃政策的勞役欺凌與傳統生活空間破壞而起義，凸顯殖民政權對原住民族文化與生存人權的嚴重踐踏。" 
+            },
+            { 
+                id: 23, 
+                title: "首位向228受難者道歉的元首", 
+                reward: 1000, 
+                answer: "李登輝前總統 (1995年2月28日)", 
+                detail: "1995年臺北新公園二二八和平紀念碑揭碑儀式上，李登輝總統代表中華民國政府向二二八全體受難者與家屬公開致歉，開啟政府正式承擔歷史責任之先例。" 
+            },
+            { 
+                id: 24, 
+                title: "臺灣工友總聯盟主張的勞動權", 
+                reward: 2500, 
+                answer: "八小時工作制、保障基本工資、禁止童工", 
+                detail: "1928年由蔣渭水催生之全臺第一個勞工總同盟組織，以爭取勞工八小時工作日、每週休息一天、安全衛生與女工產假等現代勞動基本權利為倡議目標。" 
+            },
+            { 
+                id: 25, 
+                title: "平復司法不法撤銷刑事判決意義", 
+                reward: 1000, 
+                answer: "塗銷受難者不白之冤的前科紀錄、回復名譽與尊嚴", 
+                detail: "促轉會依法宣告撤銷戒嚴時期違背憲政原則之軍事叛亂裁判，撤除政治犯之刑事前科，由國家頒發名譽回復證書，洗刷數十年冤名。" 
+            },
+            { 
+                id: 26, 
+                title: "陳澄波畫家於228事件犧牲地點", 
+                reward: 1500, 
+                answer: "嘉義火車站前", 
+                detail: "臺灣著名畫家陳澄波以嘉義市參議員身分代表市民前往水上機場進行和平斡旋，卻遭軍方拘留，1947年3月25日在嘉義火車站前未經司法審判即遭槍決示眾。" 
+            },
+            { 
+                id: 27, 
+                title: "清除威權象徵處置原則", 
+                reward: 5000, 
+                answer: "移除、拆除、改名或以公共教育化方式破除個人崇拜", 
+                detail: "依《促轉條例》第5條，公共空間紀念、緬懷威權統治者之象徵（如蔣介石銅像、軍公教營區校園雕像）應予處置，反思黨國威權崇拜，落實民主深化。" 
+            },
+            { 
+                id: 28, 
+                title: "國家人權委員會的設立準則", 
+                reward: 3000, 
+                answer: "聯合國《巴黎原則》(Paris Principles)", 
+                detail: "2020年於監察院下正式設立「國家人權委員會」，符合聯合國《巴黎原則》要求之獨立性，專責人權侵害之調查、監督國家人權公約施行與教育推廣。" 
+            },
+            { 
+                id: 29, 
+                title: "戒嚴令限制憲法哪些基本權利", 
+                reward: 2000, 
+                answer: "集會、結社、言論、出版、遷徙與人身自由", 
+                detail: "1949年5月20日起臺灣省實施戒嚴，凍結憲法第二章所賦予人民之結社（黨禁）、言論出版（報禁）、集會遊行等基本自由，形成長達38年之非常戒嚴體制。" 
+            },
+            { 
+                id: 30, 
+                title: "二二八抵臺鎮壓之國府軍隊番號", 
+                reward: 3000, 
+                answer: "整編第二十一師 (第21師，師長劉雨卿)", 
+                detail: "1947年3月8日奉南京國民政府蔣中正之命抵達基隆港與高雄港的整編第21師，登陸後沿鐵路線由北至南展開武力掃蕩與清鄉，造成重大士紳菁英與民眾死傷。" 
+            },
+            { 
+                id: 31, 
+                title: "臺灣農民組合代表領導人物", 
+                reward: 2000, 
+                answer: "簡吉、趙港", 
+                detail: "1926年成立的「臺灣農民組合」由簡吉等人奔走串聯，全盛期會員達兩萬餘人，為佃農爭取減租、抗爭地主與糖廠掠奪，是日治時期組織最深廣的農民抗爭力量。" 
+            },
+            { 
+                id: 32, 
+                title: "不當黨產處理的憲法目的", 
+                reward: 4000, 
+                answer: "破除威權時期黨國不分之特權、建立政黨公平競爭機制", 
+                detail: "追討戒嚴時期執政黨藉國家公權力無償或低價取得之房屋土地與資產，繳回國庫充作公益轉型基金，匡正民主政治環境中的實質平等。" 
+            },
+            { 
+                id: 33, 
+                title: "鹿窟事件不義遺址所在地", 
+                reward: 2000, 
+                answer: "新北市石碇區／汐止區光明寺（鹿窟菜廟）", 
+                detail: "1952年底軍警特務圍剿石碇山區涉嫌中共游擊基地，濫捕拷問數百名無辜茶農村民，在光明寺設立指揮所嚴刑逼供，為白色恐怖牽連人數極多之大規模冤獄。" 
+            },
+            { 
+                id: 34, 
+                title: "二二八處理委員會的核心訴求", 
+                reward: 4000, 
+                answer: "落實地方自治、保障人權自由、縣市長民選、軍隊撤離", 
+                detail: "1947年3月初由臺灣士紳與省參議員組成之處理委員會向行政長官公署提出《三十二條處理大綱》，力求制度改革與民主人權，卻隨後遭構陷為叛亂叛國。" 
+            },
+            { 
+                id: 35, 
+                title: "轉型正義中的「除垢法」意涵", 
+                reward: 3500, 
+                answer: "人事清查 (Lustration)，審查威權時期侵犯人權官員之任職資格", 
+                detail: "源自中東歐民主化實踐，指對威權時期曾擔任情報特工、政治法官或侵犯人權者進行背景清查，限制其在民主體制下擔任司法官或高階公職，以維繫法治公信力。" 
+            },
+            { 
+                id: 36, 
+                title: "不義遺址保存條例之立法目的", 
+                reward: 1000, 
+                answer: "歷史記憶傳承、人權教育扎根與防止歷史傷痛再度發生", 
+                detail: "透過法律明定侵害人權歷史地景之指定、保存與活化規範，讓建築空間成為永恆的歷史教室，提醒國人自由與民主之不可剝奪。" 
+            }
+        ];
+
+        // 分組初始狀態
+        let teams = [
+            { id: 1, name: "第 1 組", score: 0, linesWon: 0, color: "text-amber-400 border-amber-500 bg-amber-500/10" },
+            { id: 2, name: "第 2 組", score: 0, linesWon: 0, color: "text-sky-400 border-sky-500 bg-sky-500/10" },
+            { id: 3, name: "第 3 組", score: 0, linesWon: 0, color: "text-emerald-400 border-emerald-500 bg-emerald-500/10" },
+            { id: 4, name: "第 4 組", score: 0, linesWon: 0, color: "text-purple-400 border-purple-500 bg-purple-500/10" },
+            { id: 5, name: "第 5 組", score: 0, linesWon: 0, color: "text-rose-400 border-rose-500 bg-rose-500/10" },
+            { id: 6, name: "第 6 組", score: 0, linesWon: 0, color: "text-cyan-400 border-cyan-500 bg-cyan-500/10" },
+        ];
+
+        let currentTurnIndex = 0; // 目前輪到的組別索引
+        let activeTileId = null;  // 目前點選中的題號 (1~36)
+        let soundEnabled = true;
+
+        // 題目宮格開啟狀態表記錄：tileStates[id] = { opened: boolean, answeredCorrect: boolean, teamId: number|null }
+        let tileStates = {};
+        QUESTIONS_DATA.forEach(q => {
+            tileStates[q.id] = { opened: false, answeredCorrect: null, teamId: null };
+        });
+
+        // 14 條連線記錄表狀態 (橫1~6, 直1~6, 斜1~2)
+        const LINES_DEFINITION = [
+            // 橫向
+            { id: "h1", type: "h", name: "橫一 (Row 1)", claimedBy: null },
+            { id: "h2", type: "h", name: "橫二 (Row 2)", claimedBy: null },
+            { id: "h3", type: "h", name: "橫三 (Row 3)", claimedBy: null },
+            { id: "h4", type: "h", name: "橫四 (Row 4)", claimedBy: null },
+            { id: "h5", type: "h", name: "橫五 (Row 5)", claimedBy: null },
+            { id: "h6", type: "h", name: "橫六 (Row 6)", claimedBy: null },
+            // 直向
+            { id: "v1", type: "v", name: "直 1 (Col 1)", claimedBy: null },
+            { id: "v2", type: "v", name: "直 2 (Col 2)", claimedBy: null },
+            { id: "v3", type: "v", name: "直 3 (Col 3)", claimedBy: null },
+            { id: "v4", type: "v", name: "直 4 (Col 4)", claimedBy: null },
+            { id: "v5", type: "v", name: "直 5 (Col 5)", claimedBy: null },
+            { id: "v6", type: "v", name: "直 6 (Col 6)", claimedBy: null },
+            // 斜向
+            { id: "d1", type: "d", name: "左上至右下斜線 (↘)", claimedBy: null },
+            { id: "d2", type: "d", name: "右上至左下斜線 (↙)", claimedBy: null }
+        ];
+
+        let currentLineTab = "h";
+        let targetLineToClaim = null;
+
+        // 使用瀏覽器 Web Audio API 合成音效，無需任何外聯音訊檔
+        let audioCtx = null;
+        function getAudioContext() {
+            try {
+                if (!audioCtx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) audioCtx = new AudioContextClass();
+                }
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            } catch (err) {
+                console.warn("AudioContext 存取受限:", err);
+            }
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'correct') {
+                    [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.25, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.35);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.4);
+                    });
+                } else if (type === 'wrong') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.linearRampToValueAtTime(130, now + 0.3);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'tick') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(900, now);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.linearRampToValueAtTime(0.001, now + 0.03);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.03);
+                } else if (type === 'bingo') {
+                    const notes = [440, 554.37, 659.25, 880, 1108.7];
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                        gain.gain.setValueAtTime(0.3, now + idx * 0.12);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.5);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + idx * 0.12);
+                        osc.stop(now + idx * 0.12 + 0.55);
+                    });
+                }
+            } catch (e) {
+                console.warn("Audio playback exception:", e);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-btn');
+            btn.className = soundEnabled 
+                ? "p-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-amber-400 text-sm transition"
+                : "p-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-500 text-sm transition";
+            playSound('click');
+        }
+
+        // 渲染 6x6 賓果主面板宮格
+        function renderBingoGrid() {
+            const gridEl = document.getElementById('bingo-grid');
+            gridEl.innerHTML = '';
+
+            QUESTIONS_DATA.forEach(q => {
+                const state = tileStates[q.id];
+                const btn = document.createElement('button');
+                btn.id = `tile-btn-${q.id}`;
+                btn.onclick = () => openQuestionModal(q.id);
+
+                let bgClasses = "bg-slate-800/90 hover:bg-slate-700 border-slate-700 hover:border-indigo-400 text-slate-100 hover:scale-[1.03]";
+                let badge = "";
+
+                if (state.opened) {
+                    if (state.answeredCorrect) {
+                        const team = teams.find(t => t.id === state.teamId);
+                        const teamName = team ? team.name : "已答對";
+                        bgClasses = "bg-emerald-950/80 border-emerald-500/80 text-emerald-200 shadow-md";
+                        badge = `<div class="absolute top-1 right-1 text-[10px] md:text-xs font-bold bg-emerald-500 text-slate-950 px-1.5 py-0.5 rounded-md shadow">${teamName}</div>`;
+                    } else {
+                        bgClasses = "bg-rose-950/40 border-rose-500/40 text-slate-400";
+                        badge = `<div class="absolute top-1 right-1 text-[10px] md:text-xs font-bold bg-rose-600/60 text-white px-1.5 py-0.5 rounded-md">無得分</div>`;
+                    }
+                }
+
+                btn.className = `relative rounded-xl md:rounded-2xl border p-1 md:p-2.5 flex flex-col items-center justify-between transition-all duration-200 shadow-md overflow-hidden ${bgClasses}`;
+                btn.innerHTML = `
+                    ${badge}
+                    <!-- 題號大標 -->
+                    <div class="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-slate-900/90 text-white font-black text-sm md:text-base flex items-center justify-center border border-slate-700/80 shadow">
+                        ${q.id}
+                    </div>
+
+                    <!-- 題目簡稱 -->
+                    <div class="text-[11px] md:text-xs font-semibold text-center line-clamp-2 px-1 text-slate-200 my-auto">
+                        ${q.title}
+                    </div>
+
+                    <!-- 金額標籤 -->
+                    <div class="w-full text-center py-0.5 rounded bg-slate-900/60 border border-slate-700/60 text-[10px] md:text-xs font-black text-amber-400">
+                        $${q.reward.toLocaleString()}
+                    </div>
+                `;
+
+                gridEl.appendChild(btn);
+            });
+
+            updateStatsAndCounters();
+        }
+
+        // 渲染右側分組積分與回合
+        function renderTeams() {
+            const listEl = document.getElementById('teams-list');
+            const selectEl = document.getElementById('modal-awarding-team');
+            const claimSelectEl = document.getElementById('line-claim-team-select');
+            
+            listEl.innerHTML = '';
+            selectEl.innerHTML = '';
+            claimSelectEl.innerHTML = '';
+
+            // 依分數高低排序排行榜
+            const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+
+            sortedTeams.forEach((team, rank) => {
+                const isCurrentTurn = team.id === teams[currentTurnIndex].id;
+                const card = document.createElement('div');
+                card.className = `flex items-center justify-between p-2 rounded-xl border transition ${
+                    isCurrentTurn 
+                        ? 'bg-indigo-950/80 border-indigo-400 ring-2 ring-indigo-500/50 shadow-md' 
+                        : 'bg-slate-900/60 border-slate-700/60'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${rank === 0 ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}">
+                            ${rank + 1}
+                        </span>
+                        <div>
+                            <div class="font-bold text-sm text-white flex items-center gap-1.5">
+                                ${team.name}
+                                ${isCurrentTurn ? '<span class="text-[10px] px-1 bg-indigo-500 text-white rounded">本輪</span>' : ''}
+                            </div>
+                            <div class="text-[11px] text-slate-400">連線數：${team.linesWon} 條</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-mono font-black text-base text-amber-300">$${team.score.toLocaleString()}</div>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+
+            // 填充答題彈窗組別選單
+            teams.forEach(team => {
+                const opt1 = document.createElement('option');
+                opt1.value = team.id;
+                opt1.textContent = `${team.name} (目前 $${team.score.toLocaleString()})`;
+                if (team.id === teams[currentTurnIndex].id) opt1.selected = true;
+                selectEl.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = team.id;
+                opt2.textContent = `${team.name}`;
+                claimSelectEl.appendChild(opt2);
+            });
+
+            // 更新當前組別橫幅
+            const currentTeam = teams[currentTurnIndex];
+            document.getElementById('current-turn-name').textContent = currentTeam.name;
+        }
+
+        // 切換輪到下一組
+        function changeCurrentTurn() {
+            playSound('click');
+            currentTurnIndex = (currentTurnIndex + 1) % teams.length;
+            renderTeams();
+        }
+
+        // 切換連線類別標籤 (橫向/縱向/斜向)
+        function switchLineTab(type) {
+            playSound('click');
+            currentLineTab = type;
+            
+            document.getElementById('tab-horizontal').className = type === 'h' 
+                ? "flex-1 py-1.5 text-center text-amber-400 border-b-2 border-amber-400 font-bold" 
+                : "flex-1 py-1.5 text-center text-slate-400 hover:text-slate-200";
+            document.getElementById('tab-vertical').className = type === 'v' 
+                ? "flex-1 py-1.5 text-center text-amber-400 border-b-2 border-amber-400 font-bold" 
+                : "flex-1 py-1.5 text-center text-slate-400 hover:text-slate-200";
+            document.getElementById('tab-diagonal').className = type === 'd' 
+                ? "flex-1 py-1.5 text-center text-amber-400 border-b-2 border-amber-400 font-bold" 
+                : "flex-1 py-1.5 text-center text-slate-400 hover:text-slate-200";
+
+            renderLinesTracker();
+        }
+
+        // 渲染 14 條線記錄器清單
+        function renderLinesTracker() {
+            const container = document.getElementById('lines-container');
+            container.innerHTML = '';
+
+            const filteredLines = LINES_DEFINITION.filter(l => l.type === currentLineTab);
+
+            filteredLines.forEach(line => {
+                const item = document.createElement('div');
+                const isClaimed = line.claimedBy !== null;
+                const claimingTeam = isClaimed ? teams.find(t => t.id === line.claimedBy) : null;
+
+                item.className = `flex items-center justify-between p-2 rounded-xl border text-xs ${
+                    isClaimed 
+                        ? 'bg-amber-950/30 border-amber-500/40 text-amber-200' 
+                        : 'bg-slate-900/60 border-slate-700/60 text-slate-200 hover:border-slate-500'
+                }`;
+
+                item.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5">
+                        <span class="${isClaimed ? 'text-amber-400' : 'text-slate-400'}">●</span>
+                        <span>${line.name}</span>
+                    </div>
+
+                    ${isClaimed ? `
+                        <div class="flex items-center gap-1.5">
+                            <span class="bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded font-black">
+                                🏆 ${claimingTeam ? claimingTeam.name : '已得'} (+$5,000)
+                            </span>
+                        </div>
+                    ` : `
+                        <button onclick="openClaimLineModal('${line.id}')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow transform active:scale-95">
+                            登記 BINGO!
+                        </button>
+                    `}
+                `;
+                container.appendChild(item);
+            });
+
+            // 更新已連線統計
+            const totalClaimed = LINES_DEFINITION.filter(l => l.claimedBy !== null).length;
+            document.getElementById('claimed-lines-count').textContent = `${totalClaimed} / 14 條`;
+        }
+
+        // 開啟連線登記彈窗
+        function openClaimLineModal(lineId) {
+            playSound('click');
+            const line = LINES_DEFINITION.find(l => l.id === lineId);
+            if (!line || line.claimedBy !== null) return;
+
+            targetLineToClaim = line;
+            document.getElementById('line-claim-target-text').textContent = `登記連線：${line.name} (獎金 $5,000)`;
+            toggleModal('line-claim-modal', true);
+        }
+
+        // 確認登記連線發放 5,000 元獎金
+        function confirmClaimLine() {
+            if (!targetLineToClaim) return;
+            const selectedTeamId = parseInt(document.getElementById('line-claim-team-select').value);
+            const team = teams.find(t => t.id === selectedTeamId);
+
+            if (team) {
+                targetLineToClaim.claimedBy = team.id;
+                team.score += 5000;
+                team.linesWon += 1;
+
+                playSound('bingo');
+                launchConfetti();
+                toggleModal('line-claim-modal', false);
+                renderLinesTracker();
+                renderTeams();
+                updateStatsAndCounters();
+            }
+        }
+
+        let timerDuration = 10.0;
+        let timerRemaining = 10.0;
+        let timerInterval = null;
+        let timerRunning = false;
+
+        // 打開題目視窗
+        function openQuestionModal(tileId) {
+            playSound('click');
+            activeTileId = tileId;
+            const q = QUESTIONS_DATA.find(item => item.id === tileId);
+            if (!q) return;
+
+            // 填寫題目內容
+            document.getElementById('modal-q-number').textContent = q.id;
+            document.getElementById('modal-q-category').textContent = `題目序號 #${q.id}`;
+            document.getElementById('modal-q-reward').textContent = `$${q.reward.toLocaleString()} 元`;
+            document.getElementById('modal-q-text').textContent = q.title;
+            document.getElementById('modal-q-answer').textContent = q.answer;
+            document.getElementById('modal-q-detail').textContent = q.detail;
+
+            // 預設將當前回合的組別選中為獲獎候選
+            const selectEl = document.getElementById('modal-awarding-team');
+            selectEl.value = teams[currentTurnIndex].id;
+
+            // 重設參考解答收合
+            document.getElementById('answer-content-box').classList.add('hidden');
+            document.getElementById('answer-reveal-icon').textContent = "▼";
+
+            // 重設計時器
+            resetTimer();
+
+            toggleModal('question-modal', true);
+        }
+
+        function closeQuestionModal() {
+            playSound('click');
+            stopTimer();
+            toggleModal('question-modal', false);
+        }
+
+        // 題目參考解答折疊展開
+        function toggleAnswerReveal() {
+            playSound('click');
+            const box = document.getElementById('answer-content-box');
+            const icon = document.getElementById('answer-reveal-icon');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                icon.textContent = "▲";
+            } else {
+                box.classList.add('hidden');
+                icon.textContent = "▼";
+            }
+        }
+
+        // 10秒計時器核心控制
+        function toggleTimer() {
+            if (timerRunning) {
+                stopTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            if (timerRemaining <= 0) {
+                timerRemaining = 10.0;
+            }
+            timerRunning = true;
+            document.getElementById('timer-toggle-btn').textContent = "暫停計時";
+            document.getElementById('timer-toggle-btn').className = "px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-lg transition";
+            document.getElementById('timer-badge').textContent = "進行中";
+            document.getElementById('timer-badge').className = "text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded";
+
+            const step = 100; // ms
+            timerInterval = setInterval(() => {
+                timerRemaining = Math.max(0, timerRemaining - step / 1000);
+                updateTimerDisplay();
+
+                // 播放倒數短嗶聲 (最後3秒)
+                if (timerRemaining <= 3.0 && timerRemaining > 0 && Math.round(timerRemaining * 10) % 10 === 0) {
+                    playSound('tick');
+                }
+
+                if (timerRemaining <= 0) {
+                    stopTimer();
+                    playSound('wrong');
+                    document.getElementById('timer-badge').textContent = "時間到！";
+                    document.getElementById('timer-badge').className = "text-xs bg-rose-500/30 text-rose-300 px-2 py-0.5 rounded font-bold animate-pulse";
+                }
+            }, step);
+        }
+
+        function stopTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('timer-toggle-btn').textContent = "繼續計時";
+            document.getElementById('timer-toggle-btn').className = "px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition";
+        }
+
+        function resetTimer() {
+            stopTimer();
+            timerRemaining = 10.0;
+            updateTimerDisplay();
+            document.getElementById('timer-toggle-btn').textContent = "開始倒數";
+            document.getElementById('timer-badge').textContent = "未啟動";
+            document.getElementById('timer-badge').className = "text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded";
+        }
+
+        function updateTimerDisplay() {
+            const bar = document.getElementById('timer-bar');
+            const text = document.getElementById('timer-text');
+            const percent = (timerRemaining / timerDuration) * 100;
+            bar.style.width = `${percent}%`;
+            text.textContent = `剩餘：${timerRemaining.toFixed(1)} 秒`;
+        }
+
+        // 結算當前題目的回答結果
+        function markQuestionResult(isCorrect) {
+            if (!activeTileId) return;
+            const q = QUESTIONS_DATA.find(item => item.id === activeTileId);
+            const awardedTeamId = parseInt(document.getElementById('modal-awarding-team').value);
+            const team = teams.find(t => t.id === awardedTeamId);
+
+            tileStates[activeTileId].opened = true;
+            tileStates[activeTileId].answeredCorrect = isCorrect;
+            tileStates[activeTileId].teamId = isCorrect ? awardedTeamId : null;
+
+            if (isCorrect && team && q) {
+                team.score += q.reward;
+                playSound('correct');
+            } else {
+                playSound('wrong');
+            }
+
+            // 自動前進到下一組的回合
+            currentTurnIndex = (currentTurnIndex + 1) % teams.length;
+
+            closeQuestionModal();
+            renderBingoGrid();
+            renderTeams();
+            updateStatsAndCounters();
+        }
+
+        let previewTimerInterval = null;
+        let previewSecondsLeft = 30;
+
+        function startPreviewMode() {
+            playSound('click');
+            const modal = document.getElementById('preview-modal');
+            const gridContainer = document.getElementById('preview-grid');
+            gridContainer.innerHTML = '';
+
+            // 渲染所有 36 張卡片（僅顯示題號、題目項目與金額，不顯示答案）
+            QUESTIONS_DATA.forEach(q => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 border border-amber-500/50 rounded-xl p-2.5 flex flex-col justify-between text-center shadow-lg relative min-h-[90px] md:min-h-[105px]";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] font-bold text-slate-400">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-md flex items-center justify-center font-mono font-bold">${q.id}</span>
+                        <span class="text-amber-400 font-black tracking-tight text-xs">$${q.reward.toLocaleString()}</span>
+                    </div>
+                    <div class="my-auto py-1 font-bold text-xs md:text-sm text-slate-100 line-clamp-3 leading-snug flex items-center justify-center">
+                        ${q.title}
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+
+            modal.classList.remove('hidden');
+            previewSecondsLeft = 30;
+            document.getElementById('preview-timer-num').textContent = previewSecondsLeft;
+
+            clearInterval(previewTimerInterval);
+            previewTimerInterval = setInterval(() => {
+                previewSecondsLeft--;
+                document.getElementById('preview-timer-num').textContent = previewSecondsLeft;
+                if (previewSecondsLeft <= 5 && previewSecondsLeft > 0) {
+                    playSound('tick');
+                }
+                if (previewSecondsLeft <= 0) {
+                    stopPreviewMode();
+                }
+            }, 1000);
+        }
+
+        function stopPreviewMode() {
+            clearInterval(previewTimerInterval);
+            previewTimerInterval = null;
+            document.getElementById('preview-modal').classList.add('hidden');
+            playSound('bingo');
+        }
+
+        // 隨機抽籤輪盤：挑選一個尚未開啟的宮格
+        function pickRandomUnopenedTile() {
+            playSound('click');
+            const unopened = QUESTIONS_DATA.filter(q => !tileStates[q.id].opened);
+            if (unopened.length === 0) {
+                showToast("🎉 所有 36 道人權題目均已點選完畢！");
+                return;
+            }
+
+            // 隨機抽中題目並彈出答題視窗
+            const picked = unopened[Math.floor(Math.random() * unopened.length)];
+            
+            // 視覺閃爍聚焦效果
+            const btn = document.getElementById(`tile-btn-${picked.id}`);
+            if (btn) {
+                btn.classList.add('animate-gold-glow', 'ring-4', 'ring-amber-400');
+                setTimeout(() => {
+                    btn.classList.remove('animate-gold-glow', 'ring-4', 'ring-amber-400');
+                    openQuestionModal(picked.id);
+                }, 400);
+            } else {
+                openQuestionModal(picked.id);
+            }
+        }
+
+        // 更新統計數據與剩餘題數
+        function updateStatsAndCounters() {
+            const openedCount = QUESTIONS_DATA.filter(q => tileStates[q.id].opened).length;
+            const remaining = 36 - openedCount;
+            document.getElementById('unopened-counter').textContent = `剩餘 ${remaining} 格`;
+            document.getElementById('completed-questions-count').textContent = `${openedCount}/36`;
+
+            const totalIssued = teams.reduce((sum, t) => sum + t.score, 0);
+            document.getElementById('total-money-issued').textContent = `$${totalIssued.toLocaleString()}`;
+        }
+
+        // 通用 Modal 開關
+        function toggleModal(modalId, show) {
+            const el = document.getElementById(modalId);
+            if (!el) return;
+            if (show) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        function openPrintModal() {
+            playSound('click');
+            toggleModal('print-modal', true);
+        }
+
+        // 全螢幕切換
+        function toggleFullscreen() {
+            playSound('click');
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // 開啟重設確認視窗 (取代 window.confirm)
+        function promptResetGame() {
+            playSound('click');
+            toggleModal('reset-confirm-modal', true);
+        }
+
+        // 執行重設整場遊戲
+        function executeResetGame() {
+            QUESTIONS_DATA.forEach(q => {
+                tileStates[q.id] = { opened: false, answeredCorrect: null, teamId: null };
+            });
+            teams.forEach(t => {
+                t.score = 0;
+                t.linesWon = 0;
+            });
+            LINES_DEFINITION.forEach(l => l.claimedBy = null);
+            currentTurnIndex = 0;
+
+            renderBingoGrid();
+            renderTeams();
+            renderLinesTracker();
+            updateStatsAndCounters();
+            playSound('click');
+            toggleModal('reset-confirm-modal', false);
+            showToast("整場遊戲已重設完畢！");
+        }
+
+        // 一鍵下載單一 index.html 檔案功能
+        function downloadCurrentHtmlFile() {
+            try {
+                playSound('click');
+                const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "index.html";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast("✅ 已成功下載 index.html 檔案！");
+            } catch (err) {
+                console.error("下載檔案失敗:", err);
+                showToast("下載失敗，請直接由右方編輯器儲存。");
+            }
+        }
+
+        // 螢幕氣泡提示
+        function showToast(msg) {
+            const div = document.createElement('div');
+            div.className = "fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-amber-400 text-amber-300 font-bold px-6 py-3 rounded-2xl shadow-2xl animate-bounce text-sm";
+            div.textContent = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 2500);
+        }
+
+        // 彩帶灑花慶祝動畫
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let confettiAnimationId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function launchConfetti() {
+            particles = [];
+            const colors = ['#f59e0b', '#6366f1', '#10b981', '#ec4899', '#3b82f6'];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height * 0.4,
+                    r: Math.random() * 6 + 3,
+                    dx: (Math.random() - 0.5) * 15,
+                    dy: (Math.random() - 0.8) * 18,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10,
+                    tiltAngle: 0,
+                    tiltAngleInc: Math.random() * 0.08 + 0.04
+                });
+            }
+
+            if (!confettiAnimationId) {
+                renderConfetti();
+            }
+        }
+
+        function renderConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+
+            particles.forEach(p => {
+                p.x += p.dx;
+                p.y += p.dy;
+                p.dy += 0.35; // 重力
+                p.tiltAngle += p.tiltAngleInc;
+                p.tilt = Math.sin(p.tiltAngle) * 12;
+
+                if (p.y < canvas.height) {
+                    active = true;
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                }
+            });
+
+            if (active) {
+                confettiAnimationId = requestAnimationFrame(renderConfetti);
+            } else {
+                cancelAnimationFrame(confettiAnimationId);
+                confettiAnimationId = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // 鍵盤空白鍵快速控制計時器
+        window.addEventListener('keydown', (e) => {
+            const questionModal = document.getElementById('question-modal');
+            if (!questionModal.classList.contains('hidden')) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    toggleTimer();
+                } else if (e.code === 'Escape') {
+                    closeQuestionModal();
+                }
+            }
+        });
+
+        // 頁面初始化
+        window.onload = function() {
+            renderBingoGrid();
+            renderTeams();
+            renderLinesTracker();
+            updateStatsAndCounters();
+        };
+    </script>
+</body>
+</html>
